@@ -1,5 +1,5 @@
 ==================
-django_cognito_jwt
+django-cognito-jwt
 ==================
 
 
@@ -20,4 +20,4 @@ Installation
 
 .. code-block:: shell
 
-   pip install django_cognito_jwt
+   pip install django-cognito-jwt
