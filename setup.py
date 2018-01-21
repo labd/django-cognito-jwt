@@ -14,16 +14,18 @@ docs_require = [
 ]
 
 tests_require = [
-    'coverage==.4.2',
-    'pytest==3.0.5',
+    'coverage==.4.4.2',
+    'pytest==3.3.2',
+    'pytest-cov==2.5.1',
     'pytest-django==3.1.2',
-    'responses',
+    'pytest-responses==0.3.0',
 
     # Linting
-    'isort==4.2.5',
-    'flake8==3.0.3',
+    'isort==4.2.15',
+    'flake8==3.5.0',
     'flake8-blind-except==0.1.1',
-    'flake8-debugger==1.4.0',
+    'flake8-imports==0.1.1',
+    'flake8-debugger==3.0.0',
 ]
 
 setup(

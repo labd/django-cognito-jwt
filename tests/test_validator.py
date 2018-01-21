@@ -1,40 +1,43 @@
-import jwt
-import responses
+import pytest
 
 from django_cognito_jwt import validator
+from utils import create_jwt_token
 
 
-@responses.activate
-def test_json_web_keys():
-    response_content = {
-        'keys': [
-            {'alg': 'RS256', 'e': 'AQAB', 'kid': 'kid1', 'kty': 'RSA', 'n': 'secret1', 'use': 'sig'},
-            {'alg': 'RS256', 'e': 'AQAB', 'kid': 'kid2', 'kty': 'RSA', 'n': 'secret2', 'use': 'sig'}
-        ]
-    }
+def test_validate_token(cognito_well_known_keys, jwk_private_key_one):
+    token = create_jwt_token(
+        jwk_private_key_one,
+        {
+            'iss': 'https://cognito-idp.eu-central-1.amazonaws.com/bla',
+            'aud': 'my-audience',
+            'sub': 'username',
+        })
+    auth = validator.TokenValidator('eu-central-1', 'bla', 'my-audience')
+    auth.validate(token)
 
-    responses.add(
-        responses.GET,
-        'https://cognito-idp.eu-central-1.amazonaws.com/bla/.well-known/jwks.json',
-        json=response_content,
-        status=200)
 
-    auth = validator.TokenValidator('eu-central-1', 'bla', 'aud')
-    assert auth._json_web_keys == {
-        'kid1': {
-            'alg': 'RS256',
-            'e': 'AQAB',
-            'kid': 'kid1',
-            'kty': 'RSA',
-            'n': 'secret1',
-            'use': 'sig'
-        },
-        'kid2': {
-            'alg': 'RS256',
-            'e': 'AQAB',
-            'kid': 'kid2',
-            'kty': 'RSA',
-            'n': 'secret2',
-            'use': 'sig'
-        }
-    }
+def test_validate_token_error_key(cognito_well_known_keys, jwk_private_key_two):
+    token = create_jwt_token(
+        jwk_private_key_two,
+        {
+            'iss': 'https://cognito-idp.eu-central-1.amazonaws.com/bla',
+            'aud': 'my-audience',
+            'sub': 'username',
+        })
+    auth = validator.TokenValidator('eu-central-1', 'bla', 'my-audience')
+    with pytest.raises(validator.TokenError):
+        auth.validate(token)
+
+
+def test_validate_token_error_aud(cognito_well_known_keys, jwk_private_key_one):
+    token = create_jwt_token(
+        jwk_private_key_one,
+        {
+            'iss': 'https://cognito-idp.eu-central-1.amazonaws.com/bla',
+            'aud': 'other-audience',
+            'sub': 'username',
+        })
+    auth = validator.TokenValidator('eu-central-1', 'bla', 'my-audience')
+
+    with pytest.raises(validator.TokenError):
+        auth.validate(token)

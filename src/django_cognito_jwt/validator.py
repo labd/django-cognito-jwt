@@ -18,7 +18,7 @@ class TokenValidator:
 
     @cached_property
     def pool_url(self):
-        return f'https://cognito-idp.%s.amazonaws.com/%s' % (
+        return 'https://cognito-idp.%s.amazonaws.com/%s' % (
             self.aws_region, self.aws_user_pool)
 
     @cached_property
@@ -26,23 +26,22 @@ class TokenValidator:
         response = requests.get(self.pool_url + '/.well-known/jwks.json')
         response.raise_for_status()
         json_data = response.json()
-
-        result = {}
-        for item in json_data['keys']:
-            result[item['kid']] = item
-        return result
+        return {item['kid']: json.dumps(item) for item in json_data['keys']}
 
     def _get_public_key(self, token):
-        headers = jwt.get_unverified_header(token)
-        kid = headers['kid']
-        jwk_data = self.get_jwt_by_kid(kid)
-        return RSAAlgorithm.from_jwk(jwk_data)
+        try:
+            headers = jwt.get_unverified_header(token)
+        except jwt.DecodeError as exc:
+            raise TokenError(str(exc))
 
-    def get_jwt_by_kid(self, kid):
-        return json.dumps(self._json_web_keys[kid])
+        jwk_data = self._json_web_keys.get(headers['kid'])
+        if jwk_data:
+            return RSAAlgorithm.from_jwk(jwk_data)
 
     def validate(self, token):
         public_key = self._get_public_key(token)
+        if not public_key:
+            raise TokenError("No key found for this token")
 
         try:
             jwt_data = jwt.decode(
