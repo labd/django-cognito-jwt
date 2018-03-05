@@ -1,5 +1,6 @@
 import logging
 
+from django.db import transaction
 from django.contrib.auth import get_user_model
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
@@ -26,6 +27,7 @@ class JSONWebTokenAuthentication(BaseAuthentication):
 
         super().__init__()
 
+    @transaction.atomic
     def authenticate(self, request):
         """Entrypoint for Django Rest Framework"""
         jwt_token = self.get_jwt_token(request)
