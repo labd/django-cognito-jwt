@@ -49,4 +49,9 @@ Also update the rest framework settings to use the correct authentication backen
         ...
     }
 
-And for your application send the request, just set the request header's Authorization property to `bearer xxxx.xxxxxxxx.xxxx`, the `bearer` is what you set in setting.py COGNITO_AUTH_HEADER.
+And for your application send the request, just set the request header's Authorization property as this:
+
+.. code-block:: python
+    "bearer xxxx.xxxxxxxx.xxxx"
+
+The `bearer` is what you set in setting.py COGNITO_AUTH_HEADER.
