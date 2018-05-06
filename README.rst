@@ -32,7 +32,9 @@ Add the following lines to your Django settings.py file:
 
     COGNITO_AWS_REGION = '<aws region>' # 'eu-central-1'
     COGNITO_USER_POOL = '<user pool>'   # 'eu-central-1_xYzaq'
-    COGNITO_AUDIENCE = '<client id>'    
+    COGNITO_AUDIENCE = '<client id>'    # the App Client Id in your AWS Cognito console
+    COGNITO_GET_USER_OR_CREATE_FUNCTION = 'USER_MODEL.get_or_create_for_cognito' # your custom get user function name, it will create a new user if it does not exist
+    COGNITO_AUTH_HEADER = 'bearer'      # your custom token header, like 'bearer xxxx.xxxxxxxx.xxxx'
 
 Also update the rest framework settings to use the correct authentication backend:
 
@@ -45,4 +47,6 @@ Also update the rest framework settings to use the correct authentication backen
            ...
         ],
         ...
-     }
+    }
+
+And for your application send the request, just set the request header's Authorization property to `bearer xxxx.xxxxxxxx.xxxx`, the `bearer` is what you set in setting.py COGNITO_AUTH_HEADER.
