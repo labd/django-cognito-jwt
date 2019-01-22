@@ -26,7 +26,8 @@ def pytest_configure():
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': 'db.sqlite',
             },
-        }
+        },
+        ROOT_URLCONF='urls',
     )
 
 def _private_to_public_key(private_key):

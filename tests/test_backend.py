@@ -2,7 +2,9 @@
 import pytest
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.test import Client
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import status
 
 from django_cognito_jwt import backend
 from utils import create_jwt_token
@@ -78,3 +80,10 @@ def test_authenticate_error_spaces(rf):
 
     with pytest.raises(AuthenticationFailed):
         auth.authenticate(request)
+
+
+def test_authenticate_error_response_code():
+    client = Client()
+    resp = client.get('/', HTTP_AUTHORIZATION=b'bearer random iets')
+
+    assert resp.status_code == status.HTTP_401_UNAUTHORIZED
