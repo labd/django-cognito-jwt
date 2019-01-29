@@ -1,6 +1,7 @@
 import json
 import jwt
 import requests
+from django.core.cache import cache
 from jwt.algorithms import RSAAlgorithm
 
 from django.utils.functional import cached_property
@@ -34,7 +35,14 @@ class TokenValidator:
         except jwt.DecodeError as exc:
             raise TokenError(str(exc))
 
-        jwk_data = self._json_web_keys.get(headers['kid'])
+        # Check the cache before we request the keys from the URI
+        cache_key = headers['kid']
+        jwk_data = cache.get(cache_key)
+
+        if not jwk_data:
+            jwk_data = self._json_web_keys.get(headers['kid'])
+            cache.set(cache_key, jwk_data, 600)
+
         if jwk_data:
             return RSAAlgorithm.from_jwk(jwk_data)
 

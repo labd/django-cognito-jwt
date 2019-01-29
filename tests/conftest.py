@@ -2,6 +2,7 @@ import copy
 
 import pytest
 from django.conf import settings
+from django.core.cache import cache
 
 
 def pytest_configure():
@@ -109,3 +110,8 @@ def cognito_well_known_keys(responses, jwk_public_key_one, jwk_public_key_two):
         'https://cognito-idp.eu-central-1.amazonaws.com/bla/.well-known/jwks.json',
         json=jwk_keys,
         status=200)
+
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    cache.clear()

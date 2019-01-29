@@ -27,7 +27,7 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         super().__init__()
 
     def authenticate(self, request):
-        """Entrypoint for Django Rest Framework"""
+        """Entry point for Django Rest Framework"""
         jwt_token = self.get_jwt_token(request)
         if jwt_token is None:
             return None
@@ -39,7 +39,7 @@ class JSONWebTokenAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed()
 
         user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
-        return (user, jwt_token)
+        return user, jwt_token
 
     def get_jwt_token(self, request):
         auth = get_authorization_header(request).split()

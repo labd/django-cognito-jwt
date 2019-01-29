@@ -7,7 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import status
 
 from django_cognito_jwt import backend
-from utils import create_jwt_token
+from tests.utils import create_jwt_token
 
 USER_MODEL = get_user_model()
 
