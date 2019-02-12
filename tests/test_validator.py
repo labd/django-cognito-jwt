@@ -48,8 +48,8 @@ def test_validate_token_error_aud(cognito_well_known_keys, jwk_private_key_one):
     (False, 2),
     (True, 1),
 ])
-def test_validate_token_cache_not_enabled(
-        cognito_well_known_keys, jwk_private_key_one, settings, responses, is_cache_enabled, responses_calls):
+def test_validate_token_caching(cognito_well_known_keys, jwk_private_key_one, settings, responses, is_cache_enabled,
+                                responses_calls):
     if is_cache_enabled is not None:
         settings.COGNITO_PUBLIC_KEYS_CACHING_ENABLED = is_cache_enabled
 
