@@ -15,6 +15,9 @@ Status
 .. image:: https://img.shields.io/pypi/v/django-cognito-jwt.svg
     :target: https://pypi.python.org/pypi/django-cognito-jwt/
 
+.. image:: https://readthedocs.org/projects/django-cognito-jwt/badge/?version=latest
+    :target: https://django-cognito-jwt.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 Installation
 ============
