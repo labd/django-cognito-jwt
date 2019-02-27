@@ -37,13 +37,13 @@ class TokenValidator:
             raise TokenError(str(exc))
 
         if getattr(settings, 'COGNITO_PUBLIC_KEYS_CACHING_ENABLED', False):
-            cached_jwk_data = cache.get(headers['kid'])
-            if cached_jwk_data:
-                jwk_data = cached_jwk_data
-            else:
+            cache_key = 'django_cognito_jwt:%s' % headers['kid']
+            jwk_data = cache.get(cache_key)
+
+            if not jwk_data:
                 jwk_data = self._json_web_keys.get(headers['kid'])
                 timeout = getattr(settings, 'COGNITO_PUBLIC_KEYS_CACHING_TIMEOUT', 300)
-                cache.set(headers['kid'], jwk_data, timeout=timeout)
+                cache.set(cache_key, jwk_data, timeout=timeout)
         else:
             jwk_data = self._json_web_keys.get(headers['kid'])
 
