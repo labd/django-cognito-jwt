@@ -38,12 +38,15 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         except TokenError:
             raise exceptions.AuthenticationFailed()
 
-        user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
+        get_or_create_for_cognito_code = '{function_name}(jwt_payload, request)'.format(
+            function_name=settings.COGNITO_GET_USER_OR_CREATE_FUNCTION, jwt_payload=jwt_payload, request=request)
+
+        user = eval(get_or_create_for_cognito_code)
         return (user, jwt_token)
 
     def get_jwt_token(self, request):
         auth = get_authorization_header(request).split()
-        if not auth or smart_text(auth[0].lower()) != 'bearer':
+        if not auth or smart_text(auth[0].lower()) != settings.COGNITO_AUTH_HEADER:
             return None
 
         if len(auth) == 1:
