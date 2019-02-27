@@ -49,3 +49,5 @@ Also update the rest framework settings to use the correct authentication backen
         ],
         ...
      }
+
+Be sure you are passing the ID Token JWT from Cognito as the authentication header. Using the Access Token will work for authentication only but we're unable to use the `get_or_create_for_cognito` method with the Access Token.
