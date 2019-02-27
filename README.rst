@@ -6,8 +6,8 @@ An Authentication backend for Django Rest Framework for AWS Cognito JWT tokens
 
 Status
 ======
-.. image:: https://travis-ci.org/LabD/django-cognito-jwt.svg?branch=master
-    :target: https://travis-ci.org/LabD/django-cognito-jwt
+.. image:: https://travis-ci.org/labd/django-cognito-jwt.svg?branch=master
+    :target: https://travis-ci.org/labd/django-cognito-jwt
 
 .. image:: http://codecov.io/github/LabD/django-cognito-jwt/coverage.svg?branch=master
     :target: http://codecov.io/github/LabD/django-cognito-jwt?branch=master
