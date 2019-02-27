@@ -3,6 +3,8 @@ import jwt
 import requests
 from jwt.algorithms import RSAAlgorithm
 
+from django.conf import settings
+from django.core.cache import cache
 from django.utils.functional import cached_property
 
 
@@ -34,7 +36,17 @@ class TokenValidator:
         except jwt.DecodeError as exc:
             raise TokenError(str(exc))
 
-        jwk_data = self._json_web_keys.get(headers['kid'])
+        if getattr(settings, 'COGNITO_PUBLIC_KEYS_CACHING_ENABLED', False):
+            cache_key = 'django_cognito_jwt:%s' % headers['kid']
+            jwk_data = cache.get(cache_key)
+
+            if not jwk_data:
+                jwk_data = self._json_web_keys.get(headers['kid'])
+                timeout = getattr(settings, 'COGNITO_PUBLIC_KEYS_CACHING_TIMEOUT', 300)
+                cache.set(cache_key, jwk_data, timeout=timeout)
+        else:
+            jwk_data = self._json_web_keys.get(headers['kid'])
+
         if jwk_data:
             return RSAAlgorithm.from_jwk(jwk_data)
 

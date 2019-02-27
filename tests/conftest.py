@@ -30,6 +30,7 @@ def pytest_configure():
         ROOT_URLCONF='urls',
     )
 
+
 def _private_to_public_key(private_key):
     data = copy.deepcopy(private_key)
     del data['d']
@@ -61,6 +62,7 @@ def jwk_private_key_one():
             "qsjkpRBst1DG9094K_PRFcEszIlwt1NUHDMGQV1gHg3zebXxKumQ"
         )
     }
+
 
 @pytest.fixture()
 def jwk_public_key_one(jwk_private_key_one):
