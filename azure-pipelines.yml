@@ -1,0 +1,46 @@
+jobs:
+  - job: Test
+    pool:
+      vmImage: "ubuntu-16.04"
+    strategy:
+      matrix:
+        python 3.6:
+          python.version: "3.6"
+          TOXENV: "py36"
+        python 3.7:
+          python.version: "3.7"
+          TOXENV: "py37"
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "$(python.version)"
+      - script: |
+          python -m pip install --upgrade pip
+          pip3 install --upgrade setuptools
+          pip3 install --upgrade tox
+          pip3 install --upgrade codecov
+        displayName: "Install testing requirements"
+      - script: tox -e $(TOXENV)
+        displayName: "Run tox with TOXENV=$(TOXENV)"
+      - script: |
+          tox -e coverage-report
+          codecov
+        condition: succeeded()
+        displayName: "Upload coverage information to codecov.io"
+  - job: Publish
+    pool:
+      vmImage: "ubuntu-16.04"
+    dependsOn: Test
+    condition: in(variables['Build.SourceBranch'], 'refs/heads/master')
+    displayName: "Publish artifacts"
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)'
+        Contents: |
+         **/*
+         !.git/**/*
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      displayName: drop
