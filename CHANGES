@@ -1,4 +1,4 @@
-0.0.3 (unreleased)
+0.0.3 (2019-04-15)
 ==================
  - Added User model setting
  - Moved TokenValidator to separate method
