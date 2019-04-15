@@ -65,7 +65,7 @@ Be sure you are passing the ID Token JWT from Cognito as the authentication head
 Using the Access Token will work for authentication only but we're unable to use the `get_or_create_for_cognito` method with the Access Token.
 
 
-(Optional) If you want to youse a different user model then the default DJANGO_USER_MODEL
+(Optional) If you want to use a different user model then the default DJANGO_USER_MODEL
 you can use the ``COGNITO_USER_MODEL`` setting.
 
 .. code-block:: python
