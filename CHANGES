@@ -1,3 +1,8 @@
+0.0.3 (unreleased)
+==================
+ - Added User model setting
+ - Move token validator to separate method
+
 0.0.2 (2019-02-28)
 ==================
  - Added caching for Cognito public keys

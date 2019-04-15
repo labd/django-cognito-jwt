@@ -16,14 +16,6 @@ logger = logging.getLogger(__name__)
 class JSONWebTokenAuthentication(BaseAuthentication):
     """Token based authentication using the JSON Web Token standard."""
 
-    def __init__(self):
-        self._jwt_validator = TokenValidator(
-            settings.COGNITO_AWS_REGION,
-            settings.COGNITO_USER_POOL,
-            settings.COGNITO_AUDIENCE)
-
-        super().__init__()
-
     def authenticate(self, request):
         """Entrypoint for Django Rest Framework"""
         jwt_token = self.get_jwt_token(request)
@@ -32,7 +24,8 @@ class JSONWebTokenAuthentication(BaseAuthentication):
 
         # Authenticate token
         try:
-            jwt_payload = self._jwt_validator.validate(jwt_token)
+            token_validator = self.get_token_validator(request)
+            jwt_payload = token_validator.validate(jwt_token)
         except TokenError:
             raise exceptions.AuthenticationFailed()
 
@@ -58,6 +51,12 @@ class JSONWebTokenAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed(msg)
 
         return auth[1]
+
+    def get_token_validator(self, request):
+        return TokenValidator(
+            settings.COGNITO_AWS_REGION,
+            settings.COGNITO_USER_POOL,
+            settings.COGNITO_AUDIENCE)
 
     def authenticate_header(self, request):
         """
