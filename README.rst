@@ -54,9 +54,20 @@ Also update the rest framework settings to use the correct authentication backen
         'DEFAULT_AUTHENTICATION_CLASSES': [
             ...
             'django_cognito_jwt.JSONWebTokenAuthentication',
-           ...
+            ...
         ],
         ...
      }
 
-Be sure you are passing the ID Token JWT from Cognito as the authentication header. Using the Access Token will work for authentication only but we're unable to use the `get_or_create_for_cognito` method with the Access Token.
+
+
+Be sure you are passing the ID Token JWT from Cognito as the authentication header.
+Using the Access Token will work for authentication only but we're unable to use the `get_or_create_for_cognito` method with the Access Token.
+
+
+(Optional) If you want to use a different user model then the default DJANGO_USER_MODEL
+you can use the ``COGNITO_USER_MODEL`` setting.
+
+.. code-block:: python
+
+	COGNITO_USER_MODEL = "myproject.AppUser"
