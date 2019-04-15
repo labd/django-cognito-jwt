@@ -20,3 +20,9 @@ release:
 	rm -rf dist/*
 	python setup.py sdist bdist_wheel
 	twine upload dist/*
+
+black:
+	pip install black isort
+	isort --recursive src tests
+	black src/ tests/
+

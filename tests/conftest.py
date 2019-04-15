@@ -6,34 +6,27 @@ from django.conf import settings
 
 def pytest_configure():
     settings.configure(
-        COGNITO_AWS_REGION='eu-central-1',
-        COGNITO_USER_POOL='bla',
-        COGNITO_AUDIENCE='my-client-id',
-        INSTALLED_APPS=[
-            'django.contrib.auth',
-            'django.contrib.contenttypes',
-
-        ],
+        COGNITO_AWS_REGION="eu-central-1",
+        COGNITO_USER_POOL="bla",
+        COGNITO_AUDIENCE="my-client-id",
+        INSTALLED_APPS=["django.contrib.auth", "django.contrib.contenttypes"],
         MIDDLEWARE_CLASSES=[],
         CACHES={
-            'default': {
-                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-                'LOCATION': 'unique-snowflake',
+            "default": {
+                "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+                "LOCATION": "unique-snowflake",
             }
         },
         DATABASES={
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': 'db.sqlite',
-            },
+            "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db.sqlite"}
         },
-        ROOT_URLCONF='urls',
+        ROOT_URLCONF="urls",
     )
 
 
 def _private_to_public_key(private_key):
     data = copy.deepcopy(private_key)
-    del data['d']
+    del data["d"]
     return data
 
 
@@ -60,7 +53,7 @@ def jwk_private_key_one():
             "d-JuGOZi1_f4hp67Qbve_Bzh_3yvQWsTegFNjp55-MzUX-VZ-IEYqhuzaV"
             "70t0rnnqFrYgnPqrwo03MOGHUhSJTyg0vBO4S-FoW0e8YKVU1CIOClCuiB"
             "qsjkpRBst1DG9094K_PRFcEszIlwt1NUHDMGQV1gHg3zebXxKumQ"
-        )
+        ),
     }
 
 
@@ -103,11 +96,10 @@ def jwk_public_key_two(jwk_private_key_two):
 
 @pytest.fixture()
 def cognito_well_known_keys(responses, jwk_public_key_one, jwk_public_key_two):
-    jwk_keys = {
-        'keys': [jwk_public_key_one]
-    }
+    jwk_keys = {"keys": [jwk_public_key_one]}
     responses.add(
         responses.GET,
-        'https://cognito-idp.eu-central-1.amazonaws.com/bla/.well-known/jwks.json',
+        "https://cognito-idp.eu-central-1.amazonaws.com/bla/.well-known/jwks.json",
         json=jwk_keys,
-        status=200)
+        status=200,
+    )

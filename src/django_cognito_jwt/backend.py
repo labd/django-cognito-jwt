@@ -1,14 +1,13 @@
 import logging
 
 from django.apps import apps as django_apps
+from django.conf import settings
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
-from django.conf import settings
 from rest_framework import exceptions
-from rest_framework.authentication import (
-    BaseAuthentication, get_authorization_header)
+from rest_framework.authentication import BaseAuthentication, get_authorization_header
 
-from django_cognito_jwt.validator import TokenValidator, TokenError
+from django_cognito_jwt.validator import TokenError, TokenValidator
 
 logger = logging.getLogger(__name__)
 
@@ -34,20 +33,22 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         return (user, jwt_token)
 
     def get_user_model(self):
-        user_model = getattr(settings, 'COGNITO_USER_MODEL', settings.AUTH_USER_MODEL)
+        user_model = getattr(settings, "COGNITO_USER_MODEL", settings.AUTH_USER_MODEL)
         return django_apps.get_model(user_model, require_ready=False)
 
     def get_jwt_token(self, request):
         auth = get_authorization_header(request).split()
-        if not auth or smart_text(auth[0].lower()) != 'bearer':
+        if not auth or smart_text(auth[0].lower()) != "bearer":
             return None
 
         if len(auth) == 1:
-            msg = _('Invalid Authorization header. No credentials provided.')
+            msg = _("Invalid Authorization header. No credentials provided.")
             raise exceptions.AuthenticationFailed(msg)
         elif len(auth) > 2:
-            msg = _('Invalid Authorization header. Credentials string '
-                    'should not contain spaces.')
+            msg = _(
+                "Invalid Authorization header. Credentials string "
+                "should not contain spaces."
+            )
             raise exceptions.AuthenticationFailed(msg)
 
         return auth[1]
@@ -56,11 +57,12 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         return TokenValidator(
             settings.COGNITO_AWS_REGION,
             settings.COGNITO_USER_POOL,
-            settings.COGNITO_AUDIENCE)
+            settings.COGNITO_AUDIENCE,
+        )
 
     def authenticate_header(self, request):
         """
         Method required by the DRF in order to return 401 responses for authentication failures, instead of 403.
         More details in https://www.django-rest-framework.org/api-guide/authentication/#custom-authentication.
         """
-        return 'Bearer: api'
+        return "Bearer: api"
