@@ -71,3 +71,16 @@ you can use the ``COGNITO_USER_MODEL`` setting.
 .. code-block:: python
 
 	COGNITO_USER_MODEL = "myproject.AppUser"
+
+
+Example authentication flow
+===========================
+1) Client sends username and password to DRF using a POST request.
+   
+2) DRF authenticates it with AWS Cognito using ``AdminInitiateAuth`` (`boto3 <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-idp.html#CognitoIdentityProvider.Client.admin_initiate_auth>`_) and sends the tokens recived from AWS Congnito back to the client.
+
+3) Client sends request (with the recived ``access_token`` set as the authentication header) to the API which uses ``django_cognito_jwt.JSONWebTokenAuthentication`` as the ``authentication_classes``
+
+.. code-block:: python
+    header = {'Authorization': 'token {}'.format(authentication_result['AccessToken'])}
+    response = requests.post("http://127.0.0.1:8000/<API with authentication>/", headers=header)    
