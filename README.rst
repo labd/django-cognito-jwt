@@ -79,8 +79,10 @@ Example authentication flow
    
 2) DRF authenticates it with AWS Cognito using ``AdminInitiateAuth`` (`boto3 <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-idp.html#CognitoIdentityProvider.Client.admin_initiate_auth>`_) and sends the tokens recived from AWS Congnito back to the client.
 
-3) Client sends request (with the recived ``access_token`` set as the authentication header) to the API which uses ``django_cognito_jwt.JSONWebTokenAuthentication`` as the ``authentication_classes``
+3) Client sends request (with the recived ``IdToken`` set as the authentication header) to the API which uses ``django_cognito_jwt.JSONWebTokenAuthentication`` as the ``authentication_classes``
 
 .. code-block:: python
-    header = {'Authorization': 'token {}'.format(authentication_result['AccessToken'])}
+    header = {'Authorization': 'token {}'.format(authentication_result['IdToken'])}
     response = requests.post("http://127.0.0.1:8000/<API with authentication>/", headers=header)    
+
+Note: the `get_or_create_for_cognito` method of the User model needs to be implementated. (refer to: `#11 <https://github.com/labd/django-cognito-jwt/issues/3>`_
