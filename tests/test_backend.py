@@ -4,9 +4,9 @@ from django.contrib.auth import get_user_model
 from django.test import Client
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
+from utils import create_jwt_token
 
 from django_cognito_jwt import backend
-from utils import create_jwt_token
 
 USER_MODEL = get_user_model()
 
