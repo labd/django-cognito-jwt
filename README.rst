@@ -1,13 +1,6 @@
-==================
-django-cognito-jwt
-==================
-
-An Authentication backend for Django Rest Framework for AWS Cognito JWT tokens
-
-Status
-======
-.. image:: https://travis-ci.org/labd/django-cognito-jwt.svg?branch=master
-    :target: https://travis-ci.org/labd/django-cognito-jwt
+.. start-no-pypi
+.. image:: https://github.com/labd/django-cognito-jwt/workflows/Python%20Tests/badge.svg
+    :target: https://github.com/labd/django-cognito-jwt/workflows/Python%20Tests/
 
 .. image:: http://codecov.io/github/LabD/django-cognito-jwt/coverage.svg?branch=master
     :target: http://codecov.io/github/LabD/django-cognito-jwt?branch=master
@@ -18,6 +11,14 @@ Status
 .. image:: https://readthedocs.org/projects/django-cognito-jwt/badge/?version=latest
     :target: https://django-cognito-jwt.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+.. end-no-pypi
+
+
+django-cognito-jwt
+==================
+
+An Authentication backend for Django Rest Framework for AWS Cognito JWT tokens
+
 
 Installation
 ============
