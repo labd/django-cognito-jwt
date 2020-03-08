@@ -14,7 +14,7 @@
 .. end-no-pypi
 
 
-django-cognito-jwt
+Django Cognito JWT
 ==================
 
 An Authentication backend for Django Rest Framework for AWS Cognito JWT tokens
