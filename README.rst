@@ -72,3 +72,10 @@ you can use the ``COGNITO_USER_MODEL`` setting.
 .. code-block:: python
 
 	COGNITO_USER_MODEL = "myproject.AppUser"
+
+(Optional) If you want to send the request object to the custom user model then set the ``COGNITO_USER_MODEL_ADD_REQUEST_OBJ`` to true.
+
+.. code-block:: python
+
+    COGNITO_USER_MODEL_ADD_REQUEST_OBJ = True
+
