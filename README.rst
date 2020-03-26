@@ -36,7 +36,7 @@ Add the following lines to your Django ``settings.py`` file:
 
     COGNITO_AWS_REGION = '<aws region>' # 'eu-central-1'
     COGNITO_USER_POOL = '<user pool>'   # 'eu-central-1_xYzaq'
-    COGNITO_AUDIENCE = '<client id>'
+    COGNITO_AUDIENCE = '<client id>'    # or = ['<client id 1>', 'client id 2', ...]
 
 (Optional) If you want to cache the Cognito public keys between requests you can
 enable the ``COGNITO_PUBLIC_KEYS_CACHING_ENABLED`` setting (it only works if you
