@@ -29,7 +29,11 @@ class JSONWebTokenAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed()
 
         USER_MODEL = self.get_user_model()
-        user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
+
+        get_or_create_for_cognito_code = 'USER_MODEL.{function_name}(jwt_payload, request)'.format(
+            function_name=settings.COGNITO_GET_USER_OR_CREATE_FUNCTION, jwt_payload=jwt_payload, request=request)
+
+        user = eval(get_or_create_for_cognito_code)
         return (user, jwt_token)
 
     def get_user_model(self):
