@@ -42,10 +42,14 @@ Add the following lines to your Django ``settings.py`` file:
 enable the ``COGNITO_PUBLIC_KEYS_CACHING_ENABLED`` setting (it only works if you
 have the Django ``CACHES`` setup to anything other than the dummy backend).
 
+
 .. code-block:: python
 
     COGNITO_PUBLIC_KEYS_CACHING_ENABLED = True
     COGNITO_PUBLIC_KEYS_CACHING_TIMEOUT = 60*60*24  # 24h caching, default is 300s
+    COGNITO_USER_POOL = '<user pool>'   # 'eu-central-1_xYzaq'
+    COGNITO_AUDIENCE = '<client id>'    # the App Client Id in your AWS Cognito console
+    COGNITO_GET_USER_OR_CREATE_FUNCTION = 'USER_MODEL.get_or_create_for_cognito' # your custom get user function name, it will create a new user if it does not exist
 
 Also update the rest framework settings to use the correct authentication backend:
 
@@ -72,3 +76,11 @@ you can use the ``COGNITO_USER_MODEL`` setting.
 .. code-block:: python
 
 	COGNITO_USER_MODEL = "myproject.AppUser"
+
+
+And for your application send the request, just set the request header's Authorization property as this:
+
+.. code-block:: python
+    "bearer xxxx.xxxxxxxx.xxxx"
+
+The `bearer` is what you set in setting.py COGNITO_AUTH_HEADER.
