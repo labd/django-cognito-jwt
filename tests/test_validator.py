@@ -46,6 +46,19 @@ def test_validate_token_error_aud(cognito_well_known_keys, jwk_private_key_one):
         auth.validate(token)
 
 
+def test_validate_token_missing_aud(cognito_well_known_keys, jwk_private_key_one):
+    token = create_jwt_token(
+        jwk_private_key_one,
+        {
+            "iss": "https://cognito-idp.eu-central-1.amazonaws.com/bla",
+            # missing aud
+            "sub": "username",
+        },
+    )
+    auth = validator.TokenValidator("eu-central-1", "bla", "my-audience")
+    auth.validate(token)
+
+
 @pytest.mark.parametrize(
     "is_cache_enabled,responses_calls", [(None, 2), (False, 2), (True, 1)]
 )
