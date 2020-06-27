@@ -57,14 +57,20 @@ class TokenValidator:
         if not public_key:
             raise TokenError("No key found for this token")
 
+        params = {
+            "jwt": token,
+            "key": public_key,
+            "issuer": self.pool_url,
+            "algorithms": ["RS256"]
+        }
+
+        # include audience validation if "aud" claim is provided in token payload
+        token_payload = jwt.decode(token, verify=False)
+        if "aud" in token_payload:
+            params.update({"audience": self.audience})
+
         try:
-            jwt_data = jwt.decode(
-                token,
-                public_key,
-                audience=self.audience,
-                issuer=self.pool_url,
-                algorithms=["RS256"],
-            )
+            jwt_data = jwt.decode(**params)
         except (jwt.InvalidTokenError, jwt.ExpiredSignature, jwt.DecodeError) as exc:
             raise TokenError(str(exc))
         return jwt_data
