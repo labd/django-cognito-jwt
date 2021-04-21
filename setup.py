@@ -28,7 +28,7 @@ tests_require = [
 
 setup(
     name="django-cognito-jwt",
-    version="0.0.3",
+    version="0.0.4",
     description="Django backends for AWS Cognito JWT",
     long_description=open("README.rst", "r").read(),
     url="https://github.com/LabD/django-cognito-jwt",
