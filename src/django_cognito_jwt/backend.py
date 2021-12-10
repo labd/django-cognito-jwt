@@ -38,7 +38,7 @@ class JSONWebTokenAuthentication(BaseAuthentication):
 
     def get_jwt_token(self, request):
         auth = get_authorization_header(request).split()
-        if not auth or smart_text(auth[0].lower()) != "bearer":
+        if not auth or force_str(auth[0].lower()) != "bearer":
             return None
 
         if len(auth) == 1:
