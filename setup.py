@@ -4,7 +4,7 @@ install_requires = [
     "Django>=1.11",
     "cryptography",
     "djangorestframework",
-    "pyjwt",
+    "pyjwt==1.7.1",
     "requests",
 ]
 
