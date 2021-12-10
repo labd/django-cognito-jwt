@@ -16,6 +16,7 @@ class TokenValidator:
     def __init__(self, aws_region, aws_user_pool, audience):
         self.aws_region = aws_region
         self.aws_user_pool = aws_user_pool
+        #should be either a single audience string, or an array of audience strings
         self.audience = audience
 
     @cached_property
