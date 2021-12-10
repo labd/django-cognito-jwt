@@ -21,6 +21,3 @@ balanced_wrapping = true
 default_section = "THIRDPARTY"
 known_first_party = ["django_cognito_jwt", "tests"]
 use_parentheses = true
-indent_style = "space"
-indent_size = 4
-tab_width = 4
