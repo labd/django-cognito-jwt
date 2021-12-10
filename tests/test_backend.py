@@ -36,12 +36,12 @@ def test_authenticate_valid(
         USER_MODEL.objects, "get_or_create_for_cognito", func, raising=False
     )
 
-    request = rf.get("/", HTTP_AUTHORIZATION=b"bearer %s" % token)
+    request = rf.get("/", HTTP_AUTHORIZATION=b"bearer %s" % token.encode("UTF-8"))
     auth = backend.JSONWebTokenAuthentication()
     user, auth_token = auth.authenticate(request)
     assert user
     assert user.username == "username"
-    assert auth_token == token
+    assert auth_token == token.encode("UTF-8")
 
 
 def test_authenticate_invalid(rf, cognito_well_known_keys, jwk_private_key_two):
@@ -54,7 +54,7 @@ def test_authenticate_invalid(rf, cognito_well_known_keys, jwk_private_key_two):
         },
     )
 
-    request = rf.get("/", HTTP_AUTHORIZATION=b"bearer %s" % token)
+    request = rf.get("/", HTTP_AUTHORIZATION=b"bearer %s" % token.encode("UTF-8"))
     auth = backend.JSONWebTokenAuthentication()
 
     with pytest.raises(AuthenticationFailed):
