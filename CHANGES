@@ -1,3 +1,7 @@
+0.0.4 (2021-12-10)
+==================
+ - Replace ugettext and smart_text with proper functions for Django 4 compatibility
+
 0.0.3 (2019-04-15)
 ==================
  - Added User model setting
