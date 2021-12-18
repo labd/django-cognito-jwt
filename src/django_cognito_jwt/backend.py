@@ -28,8 +28,12 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         except TokenError:
             raise exceptions.AuthenticationFailed()
 
+        add_request = getattr(settings, "COGNITO_USER_MODEL_ADD_REQUEST_OBJ", False)
         USER_MODEL = self.get_user_model()
-        user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
+        if add_request:
+            user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload, request)
+        else:
+            user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
         return (user, jwt_token)
 
     def get_user_model(self):
