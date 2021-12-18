@@ -6,6 +6,8 @@ from django.utils.encoding import force_str
 from django.utils.translation import gettext as _
 from rest_framework import exceptions
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
+from django.utils.module_loading import import_string
+
 
 from django_cognito_jwt.validator import TokenError, TokenValidator
 
@@ -28,9 +30,20 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         except TokenError:
             raise exceptions.AuthenticationFailed()
 
-        USER_MODEL = self.get_user_model()
-        user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
+        custom_user_manager = self.get_custom_user_manager()
+        if custom_user_manager:
+            user = custom_user_manager.get_or_create_for_cognito(jwt_payload)
+        else:
+            USER_MODEL = self.get_user_model()
+            user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
         return (user, jwt_token)
+
+    def get_custom_user_manager(self):
+        result = None
+        custom_user_manager_path = getattr(settings, "COGNITO_USER_MANAGER", False)
+        if(custom_user_manager_path):
+            result = import_string(custom_user_manager_path)()
+        return result
 
     def get_user_model(self):
         user_model = getattr(settings, "COGNITO_USER_MODEL", settings.AUTH_USER_MODEL)
