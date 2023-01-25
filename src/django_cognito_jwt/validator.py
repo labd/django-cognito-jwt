@@ -27,10 +27,13 @@ class TokenValidator:
 
     @cached_property
     def _json_web_keys(self):
-        response = requests.get(self.pool_url + "/.well-known/jwks.json")
-        response.raise_for_status()
-        json_data = response.json()
-        return {item["kid"]: json.dumps(item) for item in json_data["keys"]}
+        try:
+            response = requests.get(self.pool_url + "/.well-known/jwks.json")
+            response.raise_for_status()
+            json_data = response.json()
+            return {item["kid"]: json.dumps(item) for item in json_data["keys"]}
+        except (ConnectionError, Exception):
+            return {}
 
     def _get_public_key(self, token):
         try:
