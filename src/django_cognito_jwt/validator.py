@@ -1,4 +1,5 @@
 import json
+from typing import Literal
 
 import jwt
 import requests
@@ -13,10 +14,14 @@ class TokenError(Exception):
 
 
 class TokenValidator:
-    def __init__(self, aws_region, aws_user_pool, audience):
+    def __init__(self, aws_region, aws_user_pool, audience, token_type: Literal["id", "access"] = "id"):
         self.aws_region = aws_region
         self.aws_user_pool = aws_user_pool
         self.audience = audience
+        self.token_type = token_type
+
+        if token_type not in ["id", "access"]:
+            raise TokenError("Invalid token type. Choose either id or access token.")
 
     @cached_property
     def pool_url(self):
@@ -58,13 +63,16 @@ class TokenValidator:
             raise TokenError("No key found for this token")
 
         try:
-            jwt_data = jwt.decode(
-                token,
-                public_key,
-                audience=self.audience,
-                issuer=self.pool_url,
-                algorithms=["RS256"],
-            )
+            params = {
+                "jwt": token,
+                "key": public_key,
+                "issuer": self.pool_url,
+                "algorithms": ["RS256"]
+            }
+            if self.token_type == "id":
+                params.update({"audience": self.audience})
+
+            jwt_data = jwt.decode(**params)
         except (
             jwt.InvalidTokenError,
             jwt.ExpiredSignatureError,

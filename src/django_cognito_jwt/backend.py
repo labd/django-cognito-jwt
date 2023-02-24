@@ -58,6 +58,7 @@ class JSONWebTokenAuthentication(BaseAuthentication):
             settings.COGNITO_AWS_REGION,
             settings.COGNITO_USER_POOL,
             settings.COGNITO_AUDIENCE,
+            settings.COGNITO_TOKEN_TYPE,
         )
 
     def authenticate_header(self, request):
