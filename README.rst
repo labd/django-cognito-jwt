@@ -74,5 +74,7 @@ you can use the ``COGNITO_USER_MODEL`` setting.
 	COGNITO_USER_MODEL = "myproject.AppUser"
 
 The library by default uses id token. To use access token, add the following lines to your Django ``settings.py`` file:
-.. {'id', 'access'} Default: 'id'
-COGNITO_TOKEN_TYPE = 'access' 
+
+.. code-block:: python
+
+	COGNITO_TOKEN_TYPE = "access"  # '{'id', 'access'} Default: 'id'
