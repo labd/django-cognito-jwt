@@ -77,4 +77,12 @@ The library by default uses id token. To use access token, add the following lin
 
 .. code-block:: python
 
-	COGNITO_TOKEN_TYPE = "access"  # '{'id', 'access'} Default: 'id'
+	COGNITO_TOKEN_TYPE = "access"  # {'id', 'access'}, default 'id'
+
+
+As the payload of access token only contains basic user info, we could obtain further info from the `UserInfo endpoint`.
+You need to specify the Cognito domain in the ``settings.py`` file to obtain the user info from the endpoint, as follows:
+
+.. code-block:: python
+
+	COGNITO_DOMAIN = "your-user-pool-domain"  # eg, exampledomain.auth.ap-southeast-1.amazoncognito.com

@@ -73,6 +73,11 @@ class TokenValidator:
                 params.update({"audience": self.audience})
 
             jwt_data = jwt.decode(**params)
+            if self.token_type == "access":
+                if "access" not in jwt_data["token_use"]:
+                    raise TokenError("Incorrect token use")
+                if jwt_data["client_id"] not in self.audience:
+                    raise TokenError("Incorrect client_id")
         except (
             jwt.InvalidTokenError,
             jwt.ExpiredSignatureError,

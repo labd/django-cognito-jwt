@@ -1,4 +1,6 @@
 import logging
+import requests
+import json
 
 from django.apps import apps as django_apps
 from django.conf import settings
@@ -29,12 +31,26 @@ class JSONWebTokenAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed()
 
         USER_MODEL = self.get_user_model()
-        user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
+        if settings.COGNITO_TOKEN_TYPE == "access":
+            user_info = self.get_user_info(jwt_token.decode("UTF-8"))
+            user_info = json.loads(user_info.decode("UTF-8"))
+            user = USER_MODEL.objects.get_or_create_for_cognito(user_info)
+        else:
+            user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
         return (user, jwt_token)
 
     def get_user_model(self):
         user_model = getattr(settings, "COGNITO_USER_MODEL", settings.AUTH_USER_MODEL)
         return django_apps.get_model(user_model, require_ready=False)
+    
+    def get_user_info(self, access_token):
+        if settings.COGNITO_TOKEN_TYPE == "access":
+            url = f"https://{settings.COGNITO_DOMAIN}/oauth2/userInfo"
+
+            headers = {'Authorization': f'Bearer {access_token}'}
+
+            res = requests.get(url, headers=headers)
+            return res.content
 
     def get_jwt_token(self, request):
         auth = get_authorization_header(request).split()
