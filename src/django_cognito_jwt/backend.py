@@ -31,12 +31,17 @@ class JSONWebTokenAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed()
 
         USER_MODEL = self.get_user_model()
-        if settings.COGNITO_TOKEN_TYPE == "access":
-            user_info = self.get_user_info(jwt_token.decode("UTF-8"))
-            user_info = json.loads(user_info.decode("UTF-8"))
-            user = USER_MODEL.objects.get_or_create_for_cognito(user_info)
-        else:
-            user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
+        user = USER_MODEL.objects.get_user(jwt_payload)
+        if not user:
+            # Create new user if not exists
+            payload = jwt_payload
+            if settings.COGNITO_TOKEN_TYPE == "access":
+                user_info = self.get_user_info(jwt_token.decode("UTF-8"))
+                user_info = json.loads(user_info.decode("UTF-8"))
+                payload = user_info
+
+            user = USER_MODEL.objects.create_for_cognito(payload)
+        
         return (user, jwt_token)
 
     def get_user_model(self):

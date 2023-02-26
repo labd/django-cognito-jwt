@@ -86,3 +86,43 @@ You need to specify the Cognito domain in the ``settings.py`` file to obtain the
 .. code-block:: python
 
 	COGNITO_DOMAIN = "your-user-pool-domain"  # eg, exampledomain.auth.ap-southeast-1.amazoncognito.com
+
+To use the backend functions, at the DJANGO_USER_MODEL, could define methods as follows:
+
+.. code-block:: python
+
+    class CustomizedUserManager(UserManager):
+        def get_user(self, payload):
+            cognito_id = payload['sub']
+            try:
+                return self.get(cognito_id=cognito_id)
+            except self.model.DoesNotExist:
+                return None
+
+        def create_for_cognito(self, payload):
+            """Get any value from `payload` here
+            ipdb> pprint(payload)
+            {'aud': '159ufjrihgehb67sn373aotli7',
+            'auth_time': 1583503962,
+            'cognito:username': 'john-rambo',
+            'email': 'foggygiga@gmail.com',
+            'email_verified': True,
+            'event_id': 'd92a99c2-c49e-4312-8a57-c0dccb84f1c3',
+            'exp': 1583507562,
+            'iat': 1583503962,
+            'iss': 'https://cognito-idp.us-west-2.amazonaws.com/us-west-2_flCJaoDig',
+            'sub': '2e4790a0-35a4-45d7-b10c-ced79be22e94',
+            'token_use': 'id'}
+            """
+            cognito_id = payload['sub']
+
+            try:
+                user = self.create(
+                    username= payload["cognito:username"] if payload.get("cognito:username") else payload["username"],
+                    cognito_id=cognito_id,
+                    email=payload['email'],
+                    is_active=True)
+            except IntegrityError:
+                user = self.get(cognito_id=cognito_id)
+
+            return user
