@@ -24,4 +24,3 @@ release:
 format:
 	isort --recursive src tests
 	black src/ tests/
-
