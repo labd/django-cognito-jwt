@@ -24,17 +24,11 @@ jobs:
       max-parallel: 4
       matrix:
         tox_env:
-          - py36-django22
-          - py36-django30
           - py37-django22
           - py37-django30
           - py38-django22
           - py38-django30
         include:
-          - python-version: 3.6
-            tox_env: py36-django22
-          - python-version: 3.6
-            tox_env: py36-django30
           - python-version: 3.7
             tox_env: py37-django22
           - python-version: 3.7
