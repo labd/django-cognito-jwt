@@ -7,6 +7,7 @@
 .cache
 .python-version
 .venv
+venv/
 .idea/
 
 /build/
@@ -17,3 +18,4 @@
 
 # Editors
 .idea/
+.vscode/
