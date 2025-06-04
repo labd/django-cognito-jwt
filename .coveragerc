@@ -1,0 +1,4 @@
+[paths]
+source =
+    src/
+    .tox/*/lib/*/site-packages/

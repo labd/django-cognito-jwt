@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.response import Response
 
@@ -11,4 +11,4 @@ def sample_view(request):
     return Response({"hello": "world"})
 
 
-urlpatterns = [url(r"^$", sample_view, name="sample_view")]
+urlpatterns = [path("", sample_view, name="sample_view")]

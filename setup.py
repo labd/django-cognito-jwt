@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 install_requires = [
-    "Django>=1.11",
+    "Django>=4.2",
     "cryptography",
     "djangorestframework",
     "pyjwt",
@@ -13,11 +13,11 @@ docs_require = [
 ]
 
 tests_require = [
-    "coverage[toml]==5.0.3",
-    "pytest==5.3.5",
-    "pytest-django==3.8.0",
-    "pytest-cov==2.8.1",
-    "pytest-responses==0.4.0",
+    "coverage[toml]==7.8.2",
+    "pytest==8.4.0",
+    "pytest-django==4.11.1",
+    "pytest-cov==6.1.1",
+    "pytest-responses==0.5.1",
     # Linting
     "isort[pyproject]==4.3.21",
     "flake8==3.7.9",
