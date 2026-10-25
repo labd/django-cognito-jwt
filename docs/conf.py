@@ -129,7 +129,6 @@ html_theme_options = {
     'github_banner': True,
     'github_repo': 'django-cognito-jwt',
     'travis_button': True,
-    'codecov_button': True,
     'analytics_id': 'UA-75907833-X',
 }
 
