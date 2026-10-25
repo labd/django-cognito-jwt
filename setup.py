@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 install_requires = [
-    "Django>=1.11",
+    "Django>=4.2",
     "cryptography",
     "djangorestframework",
     "pyjwt",
@@ -13,13 +13,13 @@ docs_require = [
 ]
 
 tests_require = [
-    "coverage[toml]==5.0.3",
-    "pytest==5.3.5",
-    "pytest-django==3.8.0",
-    "pytest-cov==2.8.1",
-    "pytest-responses==0.4.0",
+    "coverage[toml]>=7.6",
+    "pytest>=8.3",
+    "pytest-django>=4.9",
+    "pytest-cov>=6.0",
+    "pytest-responses>=0.5.1",
     # Linting
-    'ruff; python_version >= "3.7"',
+    "ruff",
 ]
 
 setup(
@@ -30,6 +30,7 @@ setup(
     url="https://github.com/LabD/django-cognito-jwt",
     author="Michael van Tellingen",
     author_email="m.vantellingen@labdigital.nl",
+    python_requires=">=3.11",
     install_requires=install_requires,
     extras_require={"docs": docs_require, "test": tests_require,},
     use_scm_version=True,
@@ -42,13 +43,16 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Django",
-        "Framework :: Django :: 1.11",
+        "Framework :: Django :: 4.2",
+        "Framework :: Django :: 5.2",
+        "Framework :: Django :: 6.0",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
     ],
     zip_safe=False,
 )
