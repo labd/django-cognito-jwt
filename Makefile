@@ -22,6 +22,6 @@ release:
 	twine upload dist/*
 
 format:
-	isort --recursive src tests
-	black src/ tests/
+	ruff format src tests
+	ruff check --fix src tests
 
