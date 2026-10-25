@@ -8,9 +8,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2.8.0
     - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de # v1.2.4
       with:
         python-version: 3.7
     - name: Install build requirements
@@ -18,7 +18,7 @@ jobs:
     - name: Build package
       run: python setup.py sdist bdist_wheel
     - name: Publish package
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
