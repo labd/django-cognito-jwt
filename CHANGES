@@ -1,3 +1,8 @@
+Unreleased
+==========
+ - Require Python 3.11 or newer and Django 4.2 or newer (tested on Python
+   3.11-3.14 with Django 4.2, 5.2 and 6.0)
+
 0.0.4 (2021-12-10)
 ==================
  - Replace ugettext and smart_text with proper functions for Django 4 compatibility
