@@ -19,11 +19,7 @@ tests_require = [
     "pytest-cov==2.8.1",
     "pytest-responses==0.4.0",
     # Linting
-    "isort[pyproject]==4.3.21",
-    "flake8==3.7.9",
-    "flake8-imports==0.1.1",
-    "flake8-blind-except==0.1.1",
-    "flake8-debugger==3.1.0",
+    'ruff; python_version >= "3.7"',
 ]
 
 setup(
