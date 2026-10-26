@@ -1,0 +1,39 @@
+changesDir: .changes
+unreleasedDir: unreleased
+headerPath: header.tpl.md
+changelogPath: CHANGELOG.md
+versionExt: md
+versionFormat: '## {{.Version}} - {{.Time.Format "2006-01-02"}}'
+kindFormat: '### {{.Kind}}'
+changeFormat: '* {{.Body}}'
+kinds:
+  - label: Added
+    auto: minor
+  - label: Changed
+    auto: major
+  - label: Deprecated
+    auto: minor
+  - label: Removed
+    auto: major
+  - label: Fixed
+    auto: patch
+  - label: Security
+    auto: patch
+  - label: Dependency
+    auto: patch
+# uv.lock also contains the version, the release workflow runs `uv lock`
+replacements:
+  - path: pyproject.toml
+    find: '^version = ".*"'
+    replace: 'version = "{{.VersionNoPrefix}}"'
+  - path: src/django_cognito_jwt/__init__.py
+    find: '^__version__ = ".*"'
+    replace: '__version__ = "{{.VersionNoPrefix}}"'
+  - path: docs/conf.py
+    find: "^version = '.*'"
+    replace: "version = '{{.VersionNoPrefix}}'"
+newlines:
+  afterChangelogHeader: 1
+  beforeChangelogVersion: 1
+  endOfVersion: 1
+envPrefix: CHANGIE_

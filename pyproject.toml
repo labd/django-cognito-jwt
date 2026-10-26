@@ -32,7 +32,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/labd/django-cognito-jwt"
 Documentation = "https://django-cognito-jwt.readthedocs.io/"
-Changelog = "https://github.com/labd/django-cognito-jwt/blob/master/CHANGES"
+Changelog = "https://github.com/labd/django-cognito-jwt/blob/master/CHANGELOG.md"
 
 [dependency-groups]
 dev = [
@@ -72,6 +72,7 @@ packages = ["src/django_cognito_jwt"]
 include = [
     "src/django_cognito_jwt",
     "tests",
+    "CHANGELOG.md",
     "CHANGES",
     "LICENSE",
     "README.rst",
