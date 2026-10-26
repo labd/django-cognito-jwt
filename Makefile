@@ -1,27 +1,29 @@
-.PHONY: install test upload docs
+.PHONY: install format lint test retest coverage docs release
 
 
 install:
-	pip install -e .[docs,test]
+	uv sync --all-groups
+
+format:
+	uv run ruff format src tests
+	uv run ruff check --fix src tests
+
+lint:
+	uv run ruff format --check src tests
+	uv run ruff check src tests
 
 test:
-	py.test
+	uv run pytest
 
 retest:
-	py.test -vvv --lf
+	uv run pytest -vvv --lf
 
 coverage:
-	py.test --cov=django_cognito_jwt --cov-report=term-missing --cov-report=html
+	uv run pytest --cov=django_cognito_jwt --cov-report=term-missing --cov-report=html
 
 docs:
-	$(MAKE) -C docs html
+	uv run --group docs $(MAKE) -C docs html
 
 release:
 	rm -rf dist/*
-	python setup.py sdist bdist_wheel
-	twine upload dist/*
-
-format:
-	ruff format src tests
-	ruff check --fix src tests
-
+	uv build
