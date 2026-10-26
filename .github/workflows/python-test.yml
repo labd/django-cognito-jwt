@@ -28,8 +28,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { python: "3.11", django: django42 }
-          - { python: "3.12", django: django42 }
           - { python: "3.11", django: django52 }
           - { python: "3.12", django: django52 }
           - { python: "3.13", django: django52 }

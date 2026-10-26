@@ -579,7 +579,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "cryptography" },
-    { name = "django", specifier = ">=4.2" },
+    { name = "django", specifier = ">=5.2" },
     { name = "djangorestframework" },
     { name = "pyjwt" },
     { name = "requests" },
