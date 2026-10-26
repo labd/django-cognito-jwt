@@ -66,3 +66,18 @@ you can use the ``COGNITO_USER_MODEL`` setting.
 .. code-block:: python
 
 	COGNITO_USER_MODEL = "myproject.AppUser"
+
+
+Releasing
+=========
+
+Changes are tracked with `changie <https://changie.dev/>`_. Add a changelog
+entry to every pull request with a user-facing change:
+
+.. code-block:: shell
+
+   changie new
+
+When entries are merged to the default branch, a release pull request is
+opened (or updated) automatically. Merging that pull request tags the release,
+creates the GitHub release and publishes the package to PyPI.
