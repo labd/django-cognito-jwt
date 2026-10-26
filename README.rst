@@ -1,18 +1,15 @@
-.. start-no-pypi
-.. image:: https://github.com/labd/django-cognito-jwt/workflows/Python%20Tests/badge.svg
-    :target: https://github.com/labd/django-cognito-jwt/workflows/Python%20Tests/
+Django Cognito JWT
+==================
 
 .. image:: https://img.shields.io/pypi/v/django-cognito-jwt.svg
-    :target: https://pypi.python.org/pypi/django-cognito-jwt/
+    :target: https://pypi.org/project/django-cognito-jwt/
+
+.. image:: https://github.com/labd/django-cognito-jwt/actions/workflows/python-test.yml/badge.svg
+    :target: https://github.com/labd/django-cognito-jwt/actions/workflows/python-test.yml
 
 .. image:: https://readthedocs.org/projects/django-cognito-jwt/badge/?version=latest
     :target: https://django-cognito-jwt.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-.. end-no-pypi
-
-
-Django Cognito JWT
-==================
 
 An Authentication backend for Django Rest Framework for AWS Cognito JWT tokens
 
