@@ -6,6 +6,9 @@ from django.conf import settings
 from django.core.cache import cache
 from django.utils.functional import cached_property
 from jwt.algorithms import RSAAlgorithm
+from logging import getLogger
+
+logger = getLogger("django.request")
 
 
 class TokenError(Exception):
@@ -27,10 +30,14 @@ class TokenValidator:
 
     @cached_property
     def _json_web_keys(self):
-        response = requests.get(self.pool_url + "/.well-known/jwks.json")
-        response.raise_for_status()
-        json_data = response.json()
-        return {item["kid"]: json.dumps(item) for item in json_data["keys"]}
+        try:
+            response = requests.get(self.pool_url + "/.well-known/jwks.json")
+            response.raise_for_status()
+            json_data = response.json()
+            return {item["kid"]: json.dumps(item) for item in json_data["keys"]}
+        except (ConnectionError, Exception) as e:
+            logger.exception(e)
+            return {}
 
     def _get_public_key(self, token):
         try:
